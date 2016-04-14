@@ -49,6 +49,44 @@ import sys
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
+
+def build_dictionary(filename):
+  f = open(filename, "rU")
+  filetxt = f.read()
+  words = filetxt.split()
+  wordsDictionary = {}
+  for word in words:
+    word = word.lower()
+    if word in wordsDictionary:
+      word_count = wordsDictionary.get(word)
+      word_count += 1
+      wordsDictionary[word] = word_count
+    else:
+      wordsDictionary[word] = 1
+  return wordsDictionary
+
+def print_words(filename):
+  wordsDictionary = build_dictionary(filename)
+  words = wordsDictionary.keys()
+  words = sorted(words) 
+  for word in words:
+    print word , wordsDictionary[word]
+
+def frequency(item):
+  return item[1]
+
+def print_top(filename):
+  wordsDictionary = build_dictionary(filename)
+  wordItems = wordsDictionary.items()
+  wordItems = sorted(wordItems, key=frequency, reverse=True)
+  counter = 0
+  for wordItem in wordItems:
+    counter += 1
+    if counter <= 20:
+      print wordItem[0], wordItem[1]
+    else:
+      sys.exit(0)
+
 def main():
   if len(sys.argv) != 3:
     print 'usage: ./wordcount.py {--count | --topcount} file'
